@@ -1,0 +1,3 @@
+== Hudson Github Auto-Branch
+
+Autobranch Hudson jobs using Github post commit hook.
