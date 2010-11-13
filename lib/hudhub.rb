@@ -1,3 +1,7 @@
+def log(msg)
+  puts msg
+end
+
 class Hudhub
   def self.process_github_hook(github_token, github_payload)
     Hudhub.new(github_token, github_payload).process
@@ -20,6 +24,7 @@ class Hudhub
 
   def process
     check_github_token
+    log "github token is valid"
     create_hudson_job_if_needed
     run_hudson_job!
   end
@@ -36,6 +41,7 @@ class Hudhub
 
   def create_hudson_job_if_needed
     unless job_exists_for_branch?
+      log "Job does not exists for branch #{branch}"
       create_job_for_branch!
     end
   end
@@ -49,14 +55,18 @@ class Hudhub
   end
 
   def create_job_for_branch!
+    log "Create job #{hudson_job_name} for branch #{branch}"
     Hudson::Job.create!(hudson_job_name, new_job.data)
   end
 
   def new_job
-    @new_job ||= job.clone.update_branch(branch)
+    job = Hudson::Job.find(config.base_job)
+    raise "Base job does not exists" unless job
+    @new_job ||= job.update_branch(branch)
   end
 
   def run_hudson_job!
+    log "Run job #{hudson_job_name}"
     Hudson::Job.run!(hudson_job_name)
   end
 
@@ -155,8 +165,10 @@ class Hudhub
         @data = hash
       end
 
+      # Return self
       def update_branch(branch)
         self.data.gsub!(/<name>[^<]+/, "<name>#{branch}")
+        self
       end
     end
   end
