@@ -1,0 +1,3 @@
+github_token: 1234ABCD
+hudson_url: http://hudson.your-organization.com
+base_job: base_job_name
