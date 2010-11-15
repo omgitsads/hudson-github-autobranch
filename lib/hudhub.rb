@@ -72,7 +72,7 @@ class Hudhub
 
   # hudson's job name for the branch
   def hudson_job_name
-    "#{config.base_job} (#{branch})"
+    "#{config.base_job}-#{branch}"
   end
 
   class InvalidGithubToken < Exception
