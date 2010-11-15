@@ -78,6 +78,9 @@ class Hudhub
   class InvalidGithubToken < Exception
   end
 
+  class AuthenticationFailed < Exception
+  end
+
   class Config
     def initialize
       path = File.join(File.dirname(__FILE__), '..', CONFIG_FILE)
@@ -110,9 +113,7 @@ class Hudhub
       include HTTParty
 
       base_uri Hudhub.config.hudson_url
-      if Hudhub.config.username
-        basic_auth Hudhub.config.username, Hudhub.config.password
-      end
+      basic_auth(Hudhub.config.username, Hudhub.config.password) if Hudhub.config.username
       headers 'Content-type' => 'text/xml'
 
       def self.find(job_name)
@@ -123,6 +124,8 @@ class Hudhub
           Job.new(response.response.body)
         when 404
           nil
+        when 401
+          raise AuthenticationFailed
         else
           puts "Error while getting '#{url}'"
           raise response.response

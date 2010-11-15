@@ -47,4 +47,6 @@ def payload
 EOS
 end
 
-p HTTParty.post("http://localhost:9292/#{YAML.load_file('config.yml')["github_token"]}", :query => {:payload => payload}, :body => "" )
+host = "http://localhost:9292"
+
+p HTTParty.post("#{host}/#{YAML.load_file('config.yml')["github_token"]}", :query => {:payload => payload}, :body => "" )

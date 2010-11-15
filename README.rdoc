@@ -12,10 +12,6 @@ This is a sinatra application. It receives github post commit hook, creates a ne
 
 3 - Setup github post-commit hook with the github_token you specified in your config.yml file.
 
-== Contributors
-
-* Philippe Creux - http://github.com/pcreux
-
 == Note on Patches/Pull Requests
  
 * Fork the project.
