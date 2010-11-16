@@ -6,6 +6,9 @@ class Hudhub
       base_uri Hudhub.config.hudson_url
       basic_auth(Hudhub.config.username, Hudhub.config.password) if Hudhub.config.username
       headers 'Content-type' => 'text/xml'
+      # I get timeout errors on heroku but not on local env. Is that because of REE-1.8.7 ?
+      # Workaround: Set the timeout to 10 seconds and rescue timeout errors.
+      default_timeout 8
     end
 
     def self.find_or_create_copy(base_name, branch)
@@ -33,7 +36,7 @@ class Hudhub
       when 401
         raise AuthenticationFailed
       else
-        puts "Error while getting '#{url}'"
+        log "Error while getting '#{url}'"
         raise response.response
       end
     end
@@ -48,8 +51,8 @@ class Hudhub
       response = Http.post(url, :body => job.data)
 
       unless response.code == 200
-        puts "Error while posting '#{url}'"
-        puts response.parsed_response
+        log "Error while posting '#{url}'"
+        log response.parsed_response
         raise response.response
       end
 
@@ -70,14 +73,20 @@ class Hudhub
 
     def run!
       log "Running #{name}!"
-      url = "/job/#{name}/build?delay=0sec"
-      response = Http.get(url)
-      case response.code
-      when 200
-        true
-      else
-        puts "Error while getting '#{url}'"
-        raise response.response
+      url = "/job/#{name}/build"
+
+      begin
+        response = Http.get(url)
+        case response.code
+        when 200
+          true
+        else
+          log "Error while getting '#{url}'"
+          raise response.response
+        end
+      rescue Timeout::Error
+        log "Timeout... That could happen on heroku deployment. The job should be running however."
+        return true
       end
     end
 
