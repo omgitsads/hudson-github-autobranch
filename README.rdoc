@@ -2,7 +2,7 @@
 
 Autobranch Hudson jobs using Github post commit hook.
 
-This is a sinatra application. It receives github post commit hook, creates a new job on Hudson for the branch this commit belongs to (if it doesn't exist yet) and run it.
+This is a sinatra application. It receives github post commit hook, it finds or creates a new job on Hudson for the branch this commit belongs to and run it.
 
 == Setup
 

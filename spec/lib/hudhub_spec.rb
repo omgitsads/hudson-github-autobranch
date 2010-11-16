@@ -41,14 +41,14 @@ describe Hudhub do
 }
 ],
 "after": "de8251ff97ee194a289832576287d6f8ad74e3d0",
-"ref": "refs/heads/da_branch"
+"ref": "refs/heads/da-branch"
 }
     EOS
   end
 
   before do
-    Hudhub::Hudson::Job.stub!(:get)
-    Hudhub::Hudson::Job.stub!(:post)
+    Hudhub::Job::Http.stub!(:get)
+    Hudhub::Job::Http.stub!(:post)
   end
 
   describe "##process_github_hook" do
@@ -62,12 +62,20 @@ describe Hudhub do
       it "should not raise InvalidGithubToken error" do
         lambda { Hudhub.process_github_hook('1234ABCD', github_payload) }.should_not raise_error(Hudhub::InvalidGithubToken)
       end
+
+      let(:the_job) { Hudhub::Job.new('my_project', 'some xml')}
+
+      it "should call Job.find_or_create_copy.run!" do
+        Hudhub::Job.should_receive(:find_or_create_copy).with('my_project', 'da-branch') { the_job }
+        the_job.should_receive(:run!)
+        Hudhub.process_github_hook('1234ABCD', github_payload)
+      end
     end
   end
 
   describe "#branch" do
     it "should extract branch from github_payload" do
-      Hudhub.new('1234ABCD', github_payload).branch.should == 'da_branch'
+      Hudhub.new('1234ABCD', github_payload).branch.should == 'da-branch'
     end
   end
 
@@ -75,6 +83,6 @@ describe Hudhub do
     subject { Hudhub.config }
     its(:github_token) { should == '1234ABCD' }
     its(:hudson_url)   { should == 'http://hudson.your-organization.com' }
-    its(:base_job)     { should == 'base_job_name' }
+    its(:base_jobs)    { should == ['my_project'] }
   end
 end

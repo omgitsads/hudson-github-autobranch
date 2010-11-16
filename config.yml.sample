@@ -4,8 +4,15 @@ github_token: 1234ABCD
 # Your hudson server url
 hudson_url: http://hudson.your-organization.com
 
-# The base hudson job. The configuration will be copy from it
-base_job: base_job_name
+# The base hudson job. The configuration will be copy from it.
+# If the base name contains 'master', then 'master' will be replaced by the
+# branch name. The branch name will be appended otherwise.
+base_job: my_project
+
+# In case you have multiple base jobs, use the following:
+# base_jobs:
+#   - my_project_master_rspec
+#   - my_project_master_cucumber
 
 # Username and password for hudson. Uncomment if needed
 # username: 
