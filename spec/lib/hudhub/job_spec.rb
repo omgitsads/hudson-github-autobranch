@@ -66,4 +66,13 @@ describe Hudhub::Job do
       its(:data) { should == 'RANDOM_XML_<name>new-branch</name>_MORE_RANDOM_XML' }
     end
   end
+
+  describe "##delete!" do
+    it "should delete the job" do
+      Hudhub::Job::Http.should_receive(:post).
+        with("/job/my_project_old-branch_rspec/doDelete")
+      Hudhub::Job.delete!(base_job.name, 'old-branch')
+    end
+
+  end
 end

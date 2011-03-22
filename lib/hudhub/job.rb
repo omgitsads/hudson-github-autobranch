@@ -59,6 +59,13 @@ class Hudhub
       job
     end
 
+    def self.delete!(base_name, branch)
+      job_name = name_for_branch(base_name, branch)
+      log "Deleting '#{job_name}'"
+      url = "/job/#{job_name}/doDelete"
+      Http.post(url)
+    end
+
     # Substitute master by the branch name.
     # If master is not part of the base_job_name we append the branch name.
     def self.name_for_branch(base_name, branch)

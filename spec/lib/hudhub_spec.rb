@@ -46,6 +46,10 @@ describe Hudhub do
     EOS
   end
 
+  let(:github_payload_branch_deleted) do
+    JSON.parse(github_payload).merge("deleted" => true).to_json
+  end
+
   before do
     Hudhub::Job::Http.stub!(:get)
     Hudhub::Job::Http.stub!(:post)
@@ -65,17 +69,41 @@ describe Hudhub do
 
       let(:the_job) { Hudhub::Job.new('my_project', 'some xml')}
 
-      it "should call Job.find_or_create_copy.run!" do
-        Hudhub::Job.should_receive(:find_or_create_copy).with('my_project', 'da-branch') { the_job }
-        the_job.should_receive(:run!)
-        Hudhub.process_github_hook('1234ABCD', github_payload)
+      context "when the payload object does not contain the key 'deleted'" do
+        it "should call Job.find_or_create_copy.run!" do
+          Hudhub::Job.should_receive(:find_or_create_copy).with('my_project', 'da-branch') { the_job }
+          the_job.should_receive(:run!)
+          Hudhub.process_github_hook('1234ABCD', github_payload)
+        end
       end
+
+      context "when the payload object contains the key 'deleted'" do
+        it "should call Job.delete!" do
+          Hudhub::Job.should_receive(:delete!).with('my_project', 'da-branch')
+          Hudhub.process_github_hook('1234ABCD', github_payload_branch_deleted)
+        end
+      end
+
     end
   end
 
   describe "#branch" do
     it "should extract branch from github_payload" do
       Hudhub.new('1234ABCD', github_payload).branch.should == 'da-branch'
+    end
+  end
+
+  describe "#branch_deleted?" do
+    context "when github_payload does not contain the key 'deleted'" do
+      it "should be false" do
+        Hudhub.new('1234ABCD', github_payload).branch_deleted?.should == false
+      end
+    end
+
+    context "when github_payload contains the key 'deleted'" do
+      it "should be true" do
+        Hudhub.new('1234ABCD', github_payload_branch_deleted).branch_deleted?.should == true
+      end
     end
   end
 
