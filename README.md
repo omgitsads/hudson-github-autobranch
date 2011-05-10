@@ -1,12 +1,12 @@
-# Hudson Github Auto-Branch
+# Jenkins/Hudson Github Auto-Branch
 
-Autobranch Hudson jobs using Github Post-Receive hooks.
+Autobranch Jenkins/Hudson jobs using Github Post-Receive hooks.
 
 This is a sinatra application. It receives Github Post Commit Hooks and:
 
-* when a new commit is pushed to a branch, it runs the Hudson Jobs for this branch
-* when a new branch is created, it sets up Hudson Jobs for the new branch based on the existing Hudson Jobs
-* when a branch is deleted, it deletes the Hudson Jobs running this branch
+* when a new commit is pushed to a branch, it runs the Jenkins Jobs for this branch
+* when a new branch is created, it sets up Jenkins Jobs for the new branch based on the existing Jenkins Jobs
+* when a branch is deleted, it deletes the Jenkins Jobs running this branch
 
 ## Setup
 
@@ -26,7 +26,11 @@ This is a sinatra application. It receives Github Post Commit Hooks and:
   (if you want to have your own version, that is fine but bump version in a commit by itself I can ignore when I pull)
 * Send me a pull request. Bonus points for topic branches.
 
+## License
+
+MIT
+
 ## Copyright
 
-Copyright (c) 2010 Versapay. See LICENSE for details.
+Copyright (c) 2010 Versapay, Philippe Creux. See LICENSE for details.
 
