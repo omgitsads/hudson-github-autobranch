@@ -3,7 +3,7 @@ github_token: SNIP789MATE
 hubot_token: SNIP123MATE
 
 # Your hudson server url
-hudson_url: http://jenkins.snipmate.com
+hudson_url: http://ec2-50-19-107-238.compute-1.amazonaws.com/
 
 # The base hudson job. The configuration will be copy from it.
 # If the base name contains 'master', then 'master' will be replaced by the
