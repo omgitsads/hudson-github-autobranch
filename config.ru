@@ -1,2 +1,2 @@
-require 'hudhub'
+require './hudhub'
 run Sinatra::Application

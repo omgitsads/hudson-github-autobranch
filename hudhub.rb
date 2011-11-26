@@ -1,4 +1,4 @@
-require 'init'
+require './init'
 
 get '/' do
 
