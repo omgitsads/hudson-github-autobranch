@@ -1,2 +1,2 @@
 require './hudhub'
-run Sinatra::Application
+run Hudhub::Rackapp

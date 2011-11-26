@@ -1,4 +1,4 @@
-module Hudhub
+class Hudhub
   class Hubot < Processor
     def process
       check_hubot_token

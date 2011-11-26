@@ -1,13 +1,17 @@
 require './init'
 
-get '/' do
+class Hudhub
+  class Rackapp < Sinatra::Base
+    get '/' do
 
-end
+    end
 
-post '/github/:github_token' do
-  Hudhub.process_github_hook(params[:github_token], params[:payload])
-end
+    post '/github/:github_token' do
+      Hudhub.process_github_hook(params[:github_token], params[:payload])
+    end
 
-post '/hubot/:hubot_token' do
-  Hudhub.process_hubot_request(params[:hubot_token], params[:branch])
+    post '/hubot/:hubot_token' do
+      Hudhub.process_hubot_request(params[:hubot_token], params[:branch])
+    end
+  end
 end

@@ -1,4 +1,4 @@
-module Hudhub
+class Hudhub
   class Github < Processor
     def process
       check_github_token

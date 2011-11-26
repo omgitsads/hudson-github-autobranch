@@ -1,8 +1,5 @@
-module Hudhub
+class Hudhub
   class Processor
-    def self.config
-      @@config ||= Hudhub::Config.new
-    end
 
     def config
       self.class.config
