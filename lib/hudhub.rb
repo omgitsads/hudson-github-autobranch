@@ -10,10 +10,6 @@ class Hudhub
   def self.config
     @@config ||= Hudhub::Config.new
   end
-
-  def config
-    self.class.config
-  end
 end
 
 %w(processor github hubot exceptions config job).each do |file|

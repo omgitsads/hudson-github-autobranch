@@ -1,8 +1,7 @@
 class Hudhub
   class Processor
-
     def config
-      self.class.config
+      Hudhub.config
     end
   end
 end
