@@ -1,5 +1,6 @@
 # Set your own token and setup Github to post to /YOUR_TOKEN
 github_token: SNIP789MATE
+hubot_token: SNIP123MATE
 
 # Your hudson server url
 hudson_url: http://jenkins.snipmate.com

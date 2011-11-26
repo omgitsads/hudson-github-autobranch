@@ -8,6 +8,10 @@ class Hudhub::Config
     @config['github_token']
   end
 
+  def hubot_token
+    @config['hubot_token']
+  end
+
   def hudson_url
     @config['hudson_url']
   end
